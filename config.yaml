@@ -1,0 +1,26 @@
+# presence-lock configuration
+# Every threshold the app uses lives here - nothing is hardcoded in src/.
+
+camera_index: 0           # which webcam to use (0 = usually the built-in one)
+sample_fps: 3             # how many frames per second to analyze (not full camera speed)
+imgsz: 320                # YOLO input size in pixels - smaller is faster, good enough here
+confidence: 0.5           # minimum YOLO confidence to count a detection as a "person"
+model_path: yolov8n.pt    # smallest/fastest YOLOv8 model, auto-downloaded on first run
+
+window_size: 20           # number of recent sampled frames kept in the sliding window
+absent_ratio: 0.9         # window counts as ABSENT once >= 90% of it has no person
+
+lock_delay_seconds: 8     # how long continuous absence must last before locking
+warning_seconds_before_lock: 3   # show a warning this many seconds before the lock fires
+cooldown_seconds: 30      # after locking/returning, pause monitoring so it doesn't re-trigger instantly
+
+min_box_area_ratio: 0.08  # ignore person boxes smaller than this fraction of the frame
+                          # (filters out people walking past behind the user)
+
+on_camera_failure: lock   # what to do if the camera stops giving frames: lock | ignore
+
+dry_run: true             # true = log "WOULD LOCK" instead of actually locking. Keep this
+                          # true until you've watched the logs and trust the behaviour.
+show_preview: false       # true = open a debug window with the camera feed + detection box
+
+log_file: logs/events.log # where events are logged (timestamps only, never images)
